@@ -8,17 +8,18 @@ import "primeicons/primeicons.css";
 const URL = "Url";
 const PROGRAM = "Program";
 
-const searchText = ref("");
 const selectedItem = ref();
 const filterValue = ref("");
 const items = ref([]);
 const listboxRef = ref(null);
 
-const filteredItems = computed(() =>
-    items.value.filter((item) =>
-        item.name.toLowerCase().includes(searchText.value.toLowerCase()),
-    ),
-);
+window.filterValue = filterValue;
+
+const filteredItems = computed(() => {
+    return items.value.filter((item) =>
+        item.name.toLowerCase().includes(filterValue.value.toLowerCase()),
+    );
+});
 
 // TODO move it to settings
 register("Control+Space", async () => {
@@ -37,6 +38,7 @@ async function openItem() {
     if (!value) {
         return;
     }
+
     const { name, type } = value;
     switch (type) {
         case URL:
@@ -48,6 +50,8 @@ async function openItem() {
         default:
             console.warn(`Method ${type} not found`);
     }
+
+    selectedItem.value = null;
 }
 
 async function initItems() {
@@ -89,7 +93,7 @@ async function hideWindow() {
             ref="listboxRef"
             v-model="selectedItem"
             :options="filteredItems"
-            optionLabel="link"
+            optionLabel="name"
             filter
             :filterValue="filterValue"
             spellcheck="false"
