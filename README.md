@@ -6,9 +6,15 @@ Current status: proof of concept.
 
 ## Supported features
 
-- Global shortcut with Cmd+Space
+- Global shortcut with Ctrl+Space
 - Open links in default browser
 - Run programs
+
+![Handy](Demo.png "Handy")
+
+## Dependencies
+- Node.js
+- Rust
 
 ## How to run
 
