@@ -1,0 +1,16 @@
+urls:
+  Domain Driven Hexagon: https://github.com/Sairyss/domain-driven-hexagon
+  GitHub: https://github.com
+  Gmail: https://gmail.com
+  EM Handbook: https://github.com/andrablaj/engineering-management-handbook
+  MartinFowler.com: https://martinfowler.com
+  System Design Primer: https://github.com/donnemartin/system-design-primer
+  System Design Patterns: https://github.com/Sairyss/system-design-patterns
+
+programs:
+  Books: /System/Applications/Books.app/Contents/MacOS/Books
+  Calculator: /System/Applications/Calculator.app/Contents/MacOS/Calculator
+  LogSeq: /Applications/Logseq.app/Contents/MacOS/Logseq
+  Preview: /System/Applications/Preview.app/Contents/MacOS/Preview
+  Reminders: /System/Applications/Reminders.app/Contents/MacOS/Reminders
+  Telegram: /Applications/Telegram.app/Contents/MacOS/Telegram
