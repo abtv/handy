@@ -9,7 +9,6 @@ const URL = "Url";
 const PROGRAM = "Program";
 
 const selectedItem = ref();
-const filterValue = ref("");
 const items = ref([]);
 const listboxRef = ref(null);
 
@@ -102,7 +101,6 @@ async function hideWindow() {
             ref="listboxRef"
             v-model="selectedItem"
             :options="items"
-            :filterValue="filterValue"
             optionLabel="name"
             :filter="true"
             :multiple="false"
