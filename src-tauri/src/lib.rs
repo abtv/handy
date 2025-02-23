@@ -97,7 +97,37 @@ fn run_program(name: &str, app: AppHandle) -> () {
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
-        .plugin(tauri_plugin_global_shortcut::Builder::new().build())
+        .setup(|app| {
+            #[cfg(desktop)]
+            {
+                use tauri_plugin_global_shortcut::{
+                    Code, GlobalShortcutExt, Modifiers, Shortcut, ShortcutState,
+                };
+
+                let ctrl_enter_shortcut = Shortcut::new(Some(Modifiers::CONTROL), Code::Space);
+                let app_handle = app.handle().clone();
+                app.handle().plugin(
+                    tauri_plugin_global_shortcut::Builder::new()
+                        .with_handler(move |_app, shortcut, event| {
+                            let app_handle = app_handle.clone();
+                            if shortcut == &ctrl_enter_shortcut {
+                                match event.state() {
+                                    ShortcutState::Pressed => {
+                                        show_window(app_handle);
+                                    }
+                                    ShortcutState::Released => {
+                                        // No-op
+                                    }
+                                }
+                            }
+                        })
+                        .build(),
+                )?;
+
+                app.global_shortcut().register(ctrl_enter_shortcut)?;
+            }
+            Ok(())
+        })
         .invoke_handler(tauri::generate_handler![
             show_window,
             hide_window,

@@ -1,7 +1,6 @@
 <script setup>
 import { nextTick, onMounted, ref } from "vue";
 import { invoke } from "@tauri-apps/api/core";
-import { register } from "@tauri-apps/plugin-global-shortcut";
 import Listbox from "primevue/listbox";
 import "primeicons/primeicons.css";
 
@@ -11,11 +10,6 @@ const PROGRAM = "Program";
 const selectedItem = ref();
 const items = ref([]);
 const listboxRef = ref(null);
-
-// TODO move it to settings
-register("Control+Space", async () => {
-    await showWindow();
-});
 
 onMounted(() => {
     nextTick(async () => {
@@ -85,10 +79,6 @@ const resetFilter = () => {
     input.focus();
     selectedItem.value = null;
 };
-
-async function showWindow() {
-    await invoke("show_window");
-}
 
 async function hideWindow() {
     await invoke("hide_window");
