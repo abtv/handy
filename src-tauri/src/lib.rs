@@ -50,6 +50,7 @@ fn get_programs() -> Vec<String> {
 fn show_window(app: AppHandle) -> () {
     let window = app.get_webview_window("main").unwrap();
     window.show().unwrap();
+    window.set_always_on_top(true).unwrap();
     window.set_focus().unwrap();
 }
 
