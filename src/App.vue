@@ -52,16 +52,15 @@ async function initItems() {
     items.value.length = 0;
 
     const urls = await invoke("get_urls");
-    urls.sort();
-    for (const url of urls) {
-        items.value.push({ name: url, type: URL });
-    }
+    const urlItems = urls.map((x) => ({ name: x, type: URL }));
 
     const programs = await invoke("get_programs");
-    programs.sort();
-    for (const program of programs) {
-        items.value.push({ name: program, type: PROGRAM });
-    }
+    const programItems = programs.map((x) => ({ name: x, type: PROGRAM }));
+
+    const allItems = [...urlItems, ...programItems];
+    allItems.sort((a, b) => a.name.localeCompare(b.name));
+
+    items.value.push(...allItems);
 }
 
 function focusFilter() {
