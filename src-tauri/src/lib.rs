@@ -100,6 +100,9 @@ pub fn run() {
         .setup(|app| {
             #[cfg(desktop)]
             {
+                // Don't show the app in the Dock
+                app.set_activation_policy(tauri::ActivationPolicy::Accessory);
+
                 use tauri_plugin_global_shortcut::{
                     Code, GlobalShortcutExt, Modifiers, Shortcut, ShortcutState,
                 };
