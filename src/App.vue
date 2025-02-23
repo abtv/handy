@@ -1,5 +1,5 @@
 <script setup>
-import { computed, nextTick, onMounted, ref } from "vue";
+import { nextTick, onMounted, ref } from "vue";
 import { invoke } from "@tauri-apps/api/core";
 import { register } from "@tauri-apps/plugin-global-shortcut";
 import Listbox from "primevue/listbox";
@@ -12,14 +12,6 @@ const selectedItem = ref();
 const filterValue = ref("");
 const items = ref([]);
 const listboxRef = ref(null);
-
-window.filterValue = filterValue;
-
-const filteredItems = computed(() => {
-    return items.value.filter((item) =>
-        item.name.toLowerCase().includes(filterValue.value.toLowerCase()),
-    );
-});
 
 // TODO move it to settings
 register("Control+Space", async () => {
@@ -51,7 +43,9 @@ async function openItem() {
             console.warn(`Method ${type} not found`);
     }
 
+    resetFilter();
     selectedItem.value = null;
+    await hideWindow();
 }
 
 async function initItems() {
@@ -78,6 +72,22 @@ function focusFilter() {
     input.focus();
 }
 
+const resetFilter = () => {
+    if (!listboxRef.value) {
+        return;
+    }
+
+    const input = listboxRef.value.$el.querySelector("input");
+    if (!input) {
+        return;
+    }
+
+    input.value = ""; // Manually clear the input field
+    input.dispatchEvent(new Event("input")); // Trigger Vue reactivity
+    input.focus();
+    selectedItem.value = null;
+};
+
 async function showWindow() {
     await invoke("show_window");
 }
@@ -92,14 +102,14 @@ async function hideWindow() {
         <Listbox
             ref="listboxRef"
             v-model="selectedItem"
-            :options="filteredItems"
-            optionLabel="name"
-            filter
+            :options="items"
             :filterValue="filterValue"
-            spellcheck="false"
+            optionLabel="name"
+            :filter="true"
+            :multiple="false"
             @change="openItem"
             @keydown.esc="hideWindow"
-            class="w-full"
+            spellcheck="false"
         >
             <template #option="slotProps">
                 <div class="flex" style="text-align: left">
