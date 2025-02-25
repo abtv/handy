@@ -119,33 +119,25 @@ async function hideWindow() {
     </main>
 </template>
 
-<style>
+<style scoped>
 body {
-    padding: 0px;
-    margin: 0px;
-}
-
-:root {
-    font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
-    font-size: 16px;
-    line-height: 24px;
-    font-weight: 400;
-
-    color: #0f0f0f;
-    background-color: #f6f6f6;
-
-    font-synthesis: none;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-text-size-adjust: 100%;
+    margin: 0;
+    padding: 0;
 }
 
 .container {
-    margin: 0;
     display: flex;
+    flex-direction: column;
+
+    margin: 0;
+    padding: 0;
     flex-direction: column;
     justify-content: center;
     text-align: center;
+}
+
+:deep(.p-listbox-list-container) {
+    max-height: none !important; /* Removes default limitation */
+    height: 332px; /* Fills available space */
 }
 </style>
