@@ -7,9 +7,14 @@ import "primeicons/primeicons.css";
 const URL = "Url";
 const PROGRAM = "Program";
 
-const selectedItem = ref();
+const selectedItem = ref(null);
 const items = ref([]);
 const listboxRef = ref(null);
+let firstFilterItem = null;
+
+window.selectedItem = selectedItem;
+window.listboxRef = listboxRef;
+window.items = items;
 
 onMounted(() => {
     nextTick(async () => {
@@ -54,6 +59,10 @@ async function initItems() {
     allItems.sort((a, b) => a.name.localeCompare(b.name));
 
     items.value.push(...allItems);
+
+    if (allItems.length > 0) {
+        itemToOpen = allItems[0];
+    }
 }
 
 function focusFilter() {
@@ -96,7 +105,24 @@ async function hideWindow() {
             :multiple="false"
             @change="openItem"
             @keydown.esc="hideWindow"
+            @keydown.enter="(e) => {
+                if (selectedItem.value) {
+                    openItem();
+                } else if (firstFilterItem) {
+                    selectedItem.value = firstFilterItem;
+                    openItem();
+                }
+            }"
             spellcheck="false"
+            :selectionMode="'single'"
+            :focusOnHover="true"
+            @filter="(e) => { 
+                console.log(e.filterValue);
+                if (!e.filterValue || !e.filterValue.length === 0) {
+                    return;
+                }
+                firstFilterItem = e.filterValue[0];
+            }"
         >
             <template #option="slotProps">
                 <div class="flex" style="text-align: left">
